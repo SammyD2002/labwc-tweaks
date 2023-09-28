@@ -20,10 +20,12 @@ struct state {
 	GSettings *settings;
 };
 
+//AppOptions struct imported into program to add -c/--config to help menu.
 typedef struct {
   GString configDir;
 } AppOptions;
 
+//Adds the extra options to the help menu.
 void g_application_init_cmd_parameters(GApplication *app, AppOptions *options);
 
 

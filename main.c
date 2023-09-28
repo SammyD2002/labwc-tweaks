@@ -94,9 +94,9 @@ main(int argc, char **argv)
 	char filename[4096];
 	int configSet = parseArgs(argc, argv, &argcFinal, argvFinal, filename);
 	
-	if(configSet == 1){	/*Attempts to load defaults if configSet will be set to 0*/
+	if(configSet == 1){	/* If configSet = 1, set config directory to the default location.*/
 		char *home = getenv("HOME");
-		snprintf(filename, sizeof(filename), "%s/%s", home, ".config/labwc/");
+		snprintf(filename, sizeof(filename), "%s/%s", home, ".config/labwc");
 	}
 	setOUTDIR(filename); //Sets output directory.
 

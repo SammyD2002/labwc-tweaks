@@ -13,7 +13,7 @@
  */
 int parseArgs(int argc, char ** argv, int * argcFinal, char ** argvFinal, char * filename);
 
-//Checks if filename can be accessed. Returns 1 if it doesn't exist, 0 if it can be written to, and -1 if it can't.
+//Checks if filename can be accessed. Returns 1 if it doesn't exist, 0 if it can be written to, and -1 if it can't write to it.
 int attemptAccess(char * filename);
 
 #endif

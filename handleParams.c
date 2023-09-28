@@ -2,7 +2,8 @@
 //Set up options and their descriptions.
 int parseArgs(int argc, char ** argv, int * argcFinal, char ** argvFinal, char * filename){
 	int configSet = 1;
-	if (argc >= 1){ /*If argc >= 1, Search Args for -c or --config. When found, attempts to open a file at that location to make sure the dir exists.*/
+	//If argc >= 1, Search Args for -c or --config. When found, attempts to open a file at that location to make sure the dir exists.
+	if (argc >= 1){	
 		for(int i = 0; i < argc; i++){
 			if(strcmp(argv[i],"-c") == 0 || strcmp(argv[i],"--config") == 0){
 				int index = i+1;
@@ -22,6 +23,7 @@ int parseArgs(int argc, char ** argv, int * argcFinal, char ** argvFinal, char *
 			}
 		}
 	}
+	//If argc = 0, configSet remains at 1.
 	return configSet;
 }
 

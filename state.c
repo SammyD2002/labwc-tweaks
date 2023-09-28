@@ -1,7 +1,6 @@
 #include "state.h"
 #include <string.h>
-char OUTDIR[4096];
-  //Set up options and their descriptions.
+//Set up options and their descriptions. Adapted from example at https://wiki.gnome.org/HowDoI/GtkApplication/CommandLine  
 void  
 g_application_init_cmd_parameters(GApplication *app, AppOptions *options){ 
     const GOptionEntry cmd_params[] =
@@ -16,23 +15,25 @@ g_application_init_cmd_parameters(GApplication *app, AppOptions *options){
 		.arg_description = NULL,
 		},
 	{NULL}
-	};
-	
-	g_application_add_main_option_entries (G_APPLICATION (app), cmd_params);
+	};	
+	g_application_add_main_option_entries (G_APPLICATION (app), cmd_params); //Inserts the options into app.
 }
+
+//Config directory stored here.
+char OUTDIR[4096];
 
 char* setOUTDIR(char * out){
 	//Get size of filename string's memory
 	size_t size = strlen(out);
 	if(size > 4096){
-		size = 4095;
+		size = sizeof(char) * 4095;
 	}	
-	memcpy(&OUTDIR, out, size);
+	memcpy(&OUTDIR, out, size); //Copys out to OUTDIR.
 	OUTDIR[4095] = '\0';
-	return OUTDIR;
+	return OUTDIR; //Returns pointer to outdir that may or may not be used.
 }
   
 char* getOUTDIR(void){
-	return OUTDIR;
+	return OUTDIR; //Returns pointer to OUTDIR.
 }
 
