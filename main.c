@@ -121,6 +121,7 @@ main(int argc, char **argv)
     xml_save();
 
 	//Makes sure environment file can be accessed.
+	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "environment");
 	fileAccess = attemptAccess(filename);
 	if(fileAccess == 1)
 		create_env_file(filename);
