@@ -83,16 +83,7 @@ create_env_file(const char *filename){
 
 int
 main(int argc, char **argv)
-{	/*if(1 == 1){
-		printf("%s", "DEBUG STATEMENTS\nARGC: ");
-		printf("%i", argc);
-		printf("%s", "\nARGV Elements:");
-		for(int i = 0; i < argc; i++){
-			printf("%s\n", argv[i]);
-		}
-		printf("%s", "Exiting...");
-		exit(1);
-	}*/
+{	
 	char * argvFinal[argc + 1]; //argc + 1 accounts for the fact argv contains program name even with 0 args.
 	for(int i = 0; i< argc + 1; i++){
 		argvFinal[i] = NULL;
@@ -101,78 +92,42 @@ main(int argc, char **argv)
 	struct state state = { 0 };
 	/* Create buffer for filename */
 	char filename[4096];
-	/* read/create config file */
-	int configSet = 1;
-	if (argc >= 1){ /*If argc >= 1, Search Args for -c or --config. When found, attempts to open a file at that location to make sure the dir exists.*/
-		for(int i = 0; i < argc; i++){
-			if(strcmp(argv[i],"-c") == 0 || strcmp(argv[i],"--config") == 0){
-				int index = i+1;
-				int lChar = strlen(argv[index]) - 1; //-1 to get to final element, -2 to skip \0.
-				if(argv[index][lChar] == '/'){
-					argv[index][lChar] = '\0';
-				}
-				snprintf(filename, sizeof(filename), "%s/%s", argv[index], "rc.xml");
-				printf("%s", filename);
-				int success = -1;
-				if (access(filename, F_OK)) {
-              		create_basic_rcxml(filename);
-					success = 0;
-				}
-				else if(access(filename, R_OK) == 0){
-					printf("%s", "File found on fs.");
-					success = 0;
-				}
-				else{
-					printf("%s","ERROR: File not found.\n");
-					exit(1);
-				}
-				if(success == 0){
-					xml_init(filename);
-					//Sets up nodes.
-					xpath_add_node("/labwc_config/theme/cornerRadius");
-      				xpath_add_node("/labwc_config/theme/name");
-				    xpath_add_node("/labwc_config/libinput/device/naturalScroll");
-					xml_save();
-					//Makes sure additional settings files exist.
-					snprintf(filename, sizeof(filename), "%s/%s", argv[index], "environment"); 
-					if (access(filename, F_OK) != 0 && access(filename, R_OK) != 0){
-						printf("Could not open enviornment file.");
-						create_env_file(filename);
-					}
-					//Set filename back to directory.
-					snprintf(filename, sizeof(filename), "%s", argv[index]); 
-				}
-				//increment i to skip
-				i++;
-				//set config to 0 to stop later init from running.
-				configSet = 0;
-			}
-			else{
-				argvFinal[argcFinal] = argv[i];
-				argcFinal++;
-			}
-		}
-	}
-	if(configSet == 1){	/*Otherwise, attempt to load file from default locations. configSet will be set to 0*/
-		char *home = getenv("HOME");
-		snprintf(filename, sizeof(filename), "%s/%s", home, ".config/labwc/rc.xml");
-		if (access(filename, F_OK)) {
-			create_basic_rcxml(filename);
-		}
-		//printf("%s", filename);
-		xml_init(filename);
-		xpath_add_node("/labwc_config/theme/cornerRadius");
-      	xpath_add_node("/labwc_config/theme/name");
-      	xpath_add_node("/labwc_config/libinput/device/naturalScroll");
-      	xml_save();
-
-	}
-
-	/* ensure all relevant nodes exist before we start getting/setting */
+	int configSet = parseArgs(argc, argv, &argcFinal, argvFinal, filename);
 	
+	if(configSet == 1){	/*Attempts to load defaults if configSet will be set to 0*/
+		char *home = getenv("HOME");
+		snprintf(filename, sizeof(filename), "%s/%s", home, ".config/labwc/");
+	}
+	setOUTDIR(filename); //Sets output directory.
+
+	/* read/create config file */
+	//Makes sure rc.xml can be accessed.
+	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "rc.xml");
+	printf("%s", filename);
+	int fileAccess = attemptAccess(filename);
+	if(fileAccess == 1){	
+		create_basic_rcxml(filename);
+	}
+	else if(fileAccess == -1){
+		printf("%s", "ERROR: rc.xml was found but could not be accessed.");
+		exit(1);
+	}
 	//printf("%s", filename);
-	setOUTDIR(filename);
-	//printf("%s", getOUTDIR());
+	/* ensure all relevant nodes exist before we start getting/setting */
+	xml_init(filename);
+	xpath_add_node("/labwc_config/theme/cornerRadius");
+    xpath_add_node("/labwc_config/theme/name");
+    xpath_add_node("/labwc_config/libinput/device/naturalScroll");
+    xml_save();
+
+	//Makes sure environment file can be accessed.
+	fileAccess = attemptAccess(filename);
+	if(fileAccess == 1)
+		create_env_file(filename);
+	else if(fileAccess == -1){
+		printf("%s", "ERROR: environment file was found but could not be accessed.");
+		exit(1);
+	}
 	/* connect to gsettings */
 	state.settings = g_settings_new("org.gnome.desktop.interface");
 	

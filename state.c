@@ -1,7 +1,7 @@
 #include "state.h"
 #include <string.h>
 char OUTDIR[4096];
-/*  //Set up options and their descriptions.
+  //Set up options and their descriptions.
 void  
 g_application_init_cmd_parameters(GApplication *app, AppOptions *options){ 
     const GOptionEntry cmd_params[] =
@@ -20,7 +20,7 @@ g_application_init_cmd_parameters(GApplication *app, AppOptions *options){
 	
 	g_application_add_main_option_entries (G_APPLICATION (app), cmd_params);
 }
-*/
+
 char* setOUTDIR(char * out){
 	//Get size of filename string's memory
 	size_t size = strlen(out);

@@ -20,11 +20,11 @@ struct state {
 	GSettings *settings;
 };
 
-//typedef struct {
-  //GString configDir;
-//} AppOptions;
+typedef struct {
+  GString configDir;
+} AppOptions;
 
-//void g_application_init_cmd_parameters(GApplication *app, AppOptions *options);
+void g_application_init_cmd_parameters(GApplication *app, AppOptions *options);
 
 
 
