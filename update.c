@@ -25,9 +25,10 @@ environment_set(const char *key, const char *value)
 	strcat(xcur, "=");
 	char filename[4096];
 	char bufname[4096];
-	char *home = getenv("HOME");
-	snprintf(filename, sizeof(filename), "%s/%s", home, ".config/labwc/environment");
-	snprintf(bufname, sizeof(bufname), "%s/%s", home, ".config/labwc/buf");
+	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "environment");
+	snprintf(bufname, sizeof(bufname), "%s/%s", getOUTDIR(), "buf");
+	printf("%s", "Filename: ");
+	printf("%s\n", filename);
 	FILE *fe = fopen(filename, "r");
 	FILE *fw = fopen(bufname, "a");
 	if ((fe == NULL) || (fw == NULL)) {

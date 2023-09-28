@@ -21,6 +21,8 @@ executable(
     'stack-lang.c',
     'stack-mouse.c',
     'update.c',
+    'state.c',
+    'handleParams.c'
   ),
   dependencies: gtkdeps,
   install : true,

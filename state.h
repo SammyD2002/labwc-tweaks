@@ -2,9 +2,11 @@
 #ifndef STATE_H
 #define STATE_H
 #include <gtk/gtk.h>
+char* setOUTDIR(char * out);
+char* getOUTDIR(void);
 
 struct state {
-	GtkWidget *window;
+	GtkWidget *window;	
 	struct {
 		GtkWidget *corner_radius;
 		GtkWidget *openbox_theme_name;
@@ -17,5 +19,13 @@ struct state {
 	} widgets;
 	GSettings *settings;
 };
+
+//typedef struct {
+  //GString configDir;
+//} AppOptions;
+
+//void g_application_init_cmd_parameters(GApplication *app, AppOptions *options);
+
+
 
 #endif /* STATE_H */
