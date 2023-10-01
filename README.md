@@ -12,6 +12,7 @@ If you install labwc-gtktheme.py and set labwc-theme to GTK it'll
 automatically sync with the selected GTK theme.
 ### Setting Config Directory
 To set the config directory, please invoke labwc-tweaks with the -c or --config option followed by the path to the custom config directory.
+
 ```
 labwc-tweaks -c/--config "CONFIGDIR"
 ```
