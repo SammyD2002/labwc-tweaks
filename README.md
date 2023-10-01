@@ -10,6 +10,11 @@ purposes of testing labwc during development. Don't expect too much :smile:
 
 If you install labwc-gtktheme.py and set labwc-theme to GTK it'll
 automatically sync with the selected GTK theme.
+### Setting Config Directory
+To set the config directory, please invoke labwc-tweaks with the -c/--config option followed by the path to the custom config directory.
+* Please note that this only affects configuration changes that are stored in the "rc.xml" or the environment file.
+  - For information on what settings are stored in these files, please check labwc's configuration documentation online at https://labwc.github.io/labwc-config.5.html or in the manual with ```man labwc-config```.
+  - If run without the -c/--config command, the default directory, "{XDG_CONFIG_HOME:-$HOME/.config}/labwc" is used as the configuraion directory.
 
 ### build
 
