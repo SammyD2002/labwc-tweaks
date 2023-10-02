@@ -42,7 +42,7 @@ entry(xmlNode *node, char *nodename, char *content)
 	}
 }
 
-/**
+/*
  * nodename - return simplistic xpath style nodename
  * For example: <A><B><C></C></B></A> is represented by nodename /a/b/c
  */

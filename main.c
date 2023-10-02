@@ -13,7 +13,7 @@
 #include "xml.h"
 #include "handleParams.h"
 
-//Create "AppOptions Struct" to use in g_application_init_cmd_paramaters.
+/*Create "AppOptions Struct" to use in g_application_init_cmd_paramaters.*/
 static AppOptions app_options;
 
 static void
@@ -84,7 +84,7 @@ create_env_file(const char *filename){
 int
 main(int argc, char **argv)
 {	
-	char * argvFinal[argc + 1]; //argc + 1 accounts for the fact argv contains program name even with 0 args.
+	char * argvFinal[argc + 1]; /*argc + 1 is used for array size as argv will always include the program name even if argc = 0.*/
 	for(int i = 0; i< argc + 1; i++){
 		argvFinal[i] = NULL;
 	}
@@ -92,8 +92,9 @@ main(int argc, char **argv)
 	struct state state = { 0 };
 	/* Create buffer for filename */
 	char filename[4096];
-
-	//Searches array for -c/--config, and sets configSet to the return type.
+	
+	/*Set Config Directory */
+	/*Searches array for -c/--config, and sets configSet to the return type.*/
 	int configSet = parseArgs(argc, argv, &argcFinal, argvFinal, filename);
 	
 	if(configSet == 1){	/* If configSet = 1, set config directory to the default location.*/
@@ -104,9 +105,10 @@ main(int argc, char **argv)
 
 	/* read/create config file */
 	
-	//Makes sure rc.xml can be accessed.
+	/* Sets filename to the path to rc.xml */
 	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "rc.xml");
-	//printf("%s", filename); //Test statement.
+	//printf("%s", filename); /*Test statement.*/
+	/* Confirms that rc.xml exists, and that it can be accessed if it does. */
 	int fileAccess = attemptAccess(filename);
 	if(fileAccess == 1){	
 		create_basic_rcxml(filename);
@@ -123,15 +125,16 @@ main(int argc, char **argv)
 		printf("%s", "ERROR: rc.xml was found, but could not be read from or written to. Do you have permissions to access the file?\n");
 		exit(3);
 	}
-	//printf("%s", filename); //Test statement.
-	/* ensure all relevant nodes exist before we start getting/setting */
+	//printf("%s", filename); /*Test statement.*/
+	/* Initialize XML Nodes */
+	/* Ensure all relevant nodes exist before we start getting/setting. */
 	xml_init(filename);
 	xpath_add_node("/labwc_config/theme/cornerRadius");
     xpath_add_node("/labwc_config/theme/name");
     xpath_add_node("/labwc_config/libinput/device/naturalScroll");
     xml_save();
 
-	//Makes sure environment file can be accessed.
+	/*Confirms that environment file exists and can be accessed.*/
 	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "environment");
 	fileAccess = attemptAccess(filename);
 	if(fileAccess == 1)
@@ -148,7 +151,8 @@ main(int argc, char **argv)
 		printf("%s", "ERROR: environment file was found, but could not be read from or written to. Do you have permissions to access the file?\n");
 		exit(3);
 	}
-
+	
+	/* UI Initialization */
 	/* connect to gsettings */
 	state.settings = g_settings_new("org.gnome.desktop.interface");
 	
@@ -158,7 +162,7 @@ main(int argc, char **argv)
 	app = gtk_application_new(NULL, G_APPLICATION_DEFAULT_FLAGS);
 	g_signal_connect(app, "activate", G_CALLBACK(activate), &state);
 	g_application_init_cmd_parameters(G_APPLICATION(app), &app_options);
-	status = g_application_run(G_APPLICATION(app), argcFinal, argvFinal); //Pass filtered argv & argc in place of their originals.
+	status = g_application_run(G_APPLICATION(app), argcFinal, argvFinal); /*Pass filtered argv & argc in place of their originals.*/
 	g_object_unref(app);
 
 	/* clean up */
