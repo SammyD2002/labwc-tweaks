@@ -103,9 +103,10 @@ main(int argc, char **argv)
 	setOUTDIR(filename); //Sets output directory.
 
 	/* read/create config file */
+	
 	//Makes sure rc.xml can be accessed.
 	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "rc.xml");
-	printf("%s", filename);
+	//printf("%s", filename); //Test statement.
 	int fileAccess = attemptAccess(filename);
 	if(fileAccess == 1){	
 		create_basic_rcxml(filename);
@@ -122,7 +123,7 @@ main(int argc, char **argv)
 		printf("%s", "ERROR: rc.xml was found, but could not be read from or written to. Do you have permissions to access the file?\n");
 		exit(3);
 	}
-	//printf("%s", filename);
+	//printf("%s", filename); //Test statement.
 	/* ensure all relevant nodes exist before we start getting/setting */
 	xml_init(filename);
 	xpath_add_node("/labwc_config/theme/cornerRadius");
@@ -157,7 +158,7 @@ main(int argc, char **argv)
 	app = gtk_application_new(NULL, G_APPLICATION_DEFAULT_FLAGS);
 	g_signal_connect(app, "activate", G_CALLBACK(activate), &state);
 	g_application_init_cmd_parameters(G_APPLICATION(app), &app_options);
-	status = g_application_run(G_APPLICATION(app), argcFinal, argvFinal); //Lie to make app run as expected. (TMP Fix)
+	status = g_application_run(G_APPLICATION(app), argcFinal, argvFinal); //Pass filtered argv & argc in place of their originals.
 	g_object_unref(app);
 
 	/* clean up */

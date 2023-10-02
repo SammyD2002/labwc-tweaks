@@ -27,8 +27,8 @@ environment_set(const char *key, const char *value)
 	char bufname[4096];
 	snprintf(filename, sizeof(filename), "%s/%s", getOUTDIR(), "environment");
 	snprintf(bufname, sizeof(bufname), "%s/%s", getOUTDIR(), "buf");
-	printf("%s", "Filename: ");
-	printf("%s\n", filename);
+	//printf("%s", "Filename: "); //Test statements.
+	//printf("%s\n", filename);
 	FILE *fe = fopen(filename, "r");
 	FILE *fw = fopen(bufname, "a");
 	if ((fe == NULL) || (fw == NULL)) {
