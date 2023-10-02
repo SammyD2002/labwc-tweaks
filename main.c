@@ -13,7 +13,7 @@
 #include "xml.h"
 #include "handleParams.h"
 
-//Create "AppOptions Struct".
+//Create "AppOptions Struct" to use in g_application_init_cmd_paramaters.
 static AppOptions app_options;
 
 static void
@@ -73,7 +73,7 @@ create_basic_rcxml(const char *filename)
 static void
 create_env_file(const char *filename){
 	FILE *file = fopen(filename, "w");
-	if(!file) if (!file) {
+	if (!file) {
           fprintf(stderr, "warn: fopen(%s) failed\n", filename);
           return;
 	}
@@ -92,6 +92,8 @@ main(int argc, char **argv)
 	struct state state = { 0 };
 	/* Create buffer for filename */
 	char filename[4096];
+
+	//Searches array for -c/--config, and sets configSet to the return type.
 	int configSet = parseArgs(argc, argv, &argcFinal, argvFinal, filename);
 	
 	if(configSet == 1){	/* If configSet = 1, set config directory to the default location.*/
@@ -109,8 +111,16 @@ main(int argc, char **argv)
 		create_basic_rcxml(filename);
 	}
 	else if(fileAccess == -1){
-		printf("%s", "ERROR: rc.xml was found but could not be accessed.");
+		printf("%s", "ERROR: rc.xml was found, but cannot be written to. Do you have permission to write to the file?");
 		exit(1);
+	}
+	else if(fileAccess == -2){
+		printf("%s", "ERROR: rc.xml was found, but could not be read. Do you have permission to read the file?");
+		exit(2);
+	}
+	else if(fileAccess == -3){
+		printf("%s", "ERROR: rc.xml was found, but could not be read from or written to. Do you have permissions to access the file?\n");
+		exit(3);
 	}
 	//printf("%s", filename);
 	/* ensure all relevant nodes exist before we start getting/setting */
@@ -126,9 +136,18 @@ main(int argc, char **argv)
 	if(fileAccess == 1)
 		create_env_file(filename);
 	else if(fileAccess == -1){
-		printf("%s", "ERROR: environment file was found but could not be accessed.");
+		printf("%s", "ERROR: environment file was found, but cannot be written to. Do you have permission to write to the file?");
 		exit(1);
 	}
+	else if(fileAccess == -2){
+		printf("%s", "ERROR: environment file was found, but could not be read. Do you have permission to read the file?");
+		exit(2);
+	}
+	else if(fileAccess == -3){
+		printf("%s", "ERROR: environment file was found, but could not be read from or written to. Do you have permissions to access the file?\n");
+		exit(3);
+	}
+
 	/* connect to gsettings */
 	state.settings = g_settings_new("org.gnome.desktop.interface");
 	

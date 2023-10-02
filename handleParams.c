@@ -27,10 +27,11 @@ int parseArgs(int argc, char ** argv, int * argcFinal, char ** argvFinal, char *
 	return configSet;
 }
 
+//Return -1 if file could not be read from due to permissions, -2 if it couldn't be written to due to permissions, & -3 for both.
 int attemptAccess(char * filename){
 	int exist = access(filename, F_OK);
 	if(exist == 0)
-		return access(filename, W_OK);
+		return (access(filename, R_OK) + (2 * (access(filename, W_OK))));
 	else
 		return 1;
 }
