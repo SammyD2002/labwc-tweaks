@@ -10,6 +10,16 @@ purposes of testing labwc during development. Don't expect too much :smile:
 
 If you install labwc-gtktheme.py and set labwc-theme to GTK it'll
 automatically sync with the selected GTK theme.
+
+### TODO:
+	* [x] Add way to set config directory via command argument (DONE)
+		- [x] Initial Implementation (DONE)
+		- [x] Cleanup (DONE)
+	* [ ]Add way to set config directory via GUI
+		- [ ] Set up menu
+		- [ ] Add indicator to GUI
+	* [ ] Finish Documentation
+
 ### Setting Config Directory
 To set the config directory, please invoke labwc-tweaks with the -c or --config option followed by the path to the custom config directory.
 
@@ -38,5 +48,5 @@ This installs the binary to /usr/local/bin and data files to their respective lo
 If you find it a useful tool and want to expand its scope, feel free.
 
 ### packages
-
+(Original Source, not fork)
 [![Packaging status](https://repology.org/badge/vertical-allrepos/labwc-tweaks.svg)](https://repology.org/project/labwc-tweaks/versions)
